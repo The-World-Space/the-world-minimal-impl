@@ -12,7 +12,11 @@
         "noImplicitThis": true,
         "noImplicitOverride": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true
+        "noUnusedParameters": true,
+        "typeRoots": [
+            "./src/types",
+            "./node_modules/@types"
+        ]
     },
     "ts-node": {
         "compilerOptions": {
