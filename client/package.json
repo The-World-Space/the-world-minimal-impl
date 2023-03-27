@@ -2,7 +2,6 @@
     "name": "the-world-minimal-client",
     "version": "1.0.0",
     "description": "the-world minimal implementation client",
-    "main": "index.js",
     "scripts": {
         "start": "webpack serve --mode development",
         "watch": "webpack --watch",
@@ -20,7 +19,6 @@
     },
     "homepage": "https://github.com/The-World-Space/the-world-minimal-impl#readme",
     "devDependencies": {
-        "@types/node": "^18.15.10",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",
         "eslint": "^8.36.0",
