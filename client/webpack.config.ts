@@ -36,7 +36,8 @@ export default {
         }),
         new ESLintPlugin({
             extensions: ["ts"],
-            fix: true
+            fix: true,
+            cache: true
         })
     ],
     devServer: {
