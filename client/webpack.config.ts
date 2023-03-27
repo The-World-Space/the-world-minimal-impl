@@ -1,8 +1,10 @@
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
+import type webpack from "webpack";
+import type { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 
-export default {
+const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguration } = {
     entry: "./src/index.ts",
     output: {
         path: path.join(__dirname, "/dist"),
@@ -47,3 +49,5 @@ export default {
     },
     mode: "development"
 };
+
+export default config;
