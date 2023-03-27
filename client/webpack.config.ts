@@ -30,7 +30,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
     },
     resolve: {
         modules: ["src", "node_modules"],
-        extensions: [".ts"]
+        extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -45,7 +45,10 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
     devServer: {
         host: "0.0.0.0",
         port: 20310,
-        allowedHosts: "all"
+        allowedHosts: "all",
+        client: {
+            logging: "none"
+        }
     },
     mode: "development"
 };
