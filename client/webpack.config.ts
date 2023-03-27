@@ -30,7 +30,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
     },
     resolve: {
         modules: ["src", "node_modules"],
-        extensions: ['.js', '.jsx', '.ts', '.tsx']
+        extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
     plugins: [
         new HtmlWebpackPlugin({
