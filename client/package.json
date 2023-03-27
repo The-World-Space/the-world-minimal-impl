@@ -7,7 +7,7 @@
         "start": "webpack serve --mode development",
         "watch": "webpack --watch",
         "build": "webpack --mode production",
-        "lint": "eslint --ext .ts,.tsx src --fix --cache"
+        "lint": "eslint --ext .ts,.tsx . --fix --cache"
     },
     "repository": {
         "type": "git",

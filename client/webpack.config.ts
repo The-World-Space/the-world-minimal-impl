@@ -1,6 +1,6 @@
-import path from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "path";
 
 export default {
     entry: "./src/index.ts",
@@ -24,7 +24,7 @@ export default {
                 test: /\.html$/,
                 loader: "html-loader"
             }
-        ],
+        ]
     },
     resolve: {
         modules: ["src", "node_modules"],
