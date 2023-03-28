@@ -29,6 +29,9 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
         ]
     },
     resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "src")
+        },
         modules: ["src", "node_modules"],
         extensions: [".js", ".jsx", ".ts", ".tsx"]
     },

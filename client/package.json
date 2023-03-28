@@ -19,8 +19,8 @@
     },
     "homepage": "https://github.com/The-World-Space/the-world-minimal-impl#readme",
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^5.56.0",
-        "@typescript-eslint/parser": "^5.56.0",
+        "@typescript-eslint/eslint-plugin": "^5.57.0",
+        "@typescript-eslint/parser": "^5.57.0",
         "eslint": "^8.36.0",
         "eslint-plugin-simple-import-sort": "^10.0.0",
         "eslint-webpack-plugin": "^4.0.0",
@@ -33,5 +33,8 @@
         "webpack-cli": "^5.0.1",
         "webpack-dev-server": "^4.13.1"
     },
-    "sideEffects": false
+    "sideEffects": false,
+    "dependencies": {
+        "the-world-engine": "^0.4.47"
+    }
 }
