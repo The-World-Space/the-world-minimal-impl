@@ -25,11 +25,16 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             {
                 test: /\.html$/,
                 loader: "html-loader"
+            },
+            {
+                test: /\.css$/,
+                type: "asset"
             }
         ]
     },
     resolve: {
         alias: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             "@": path.resolve(__dirname, "src")
         },
         modules: ["src", "node_modules"],
