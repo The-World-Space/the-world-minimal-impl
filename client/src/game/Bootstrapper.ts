@@ -27,14 +27,14 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     })
                     .withComponent(TWE.SpriteAtlasAnimator, c => {
                         c.frameDuration = 0.1;
-                        c.addAnimation("up_idle", [ 0 ]);
-                        c.addAnimation("up_walk", [ 0, 1, 2, 3 ]);
-                        c.addAnimation("down_idle", [ 4 ]);
-                        c.addAnimation("down_walk", [ 4, 5, 6, 7 ]);
-                        c.addAnimation("left_idle", [ 8 ]);
-                        c.addAnimation("left_walk", [ 8, 9, 10, 11 ]);
-                        c.addAnimation("right_idle", [ 12 ]);
-                        c.addAnimation("right_walk", [ 12, 13, 14, 15 ]);
+                        c.addAnimation("up_idle", [ 8 ]);
+                        c.addAnimation("up_walk", [ 8, 9, 10, 11 ]);
+                        c.addAnimation("down_idle", [ 0 ]);
+                        c.addAnimation("down_walk", [ 0, 1, 2, 3 ]);
+                        c.addAnimation("left_idle", [ 12 ]);
+                        c.addAnimation("left_walk", [ 12, 13, 14, 15 ]);
+                        c.addAnimation("right_idle", [ 4 ]);
+                        c.addAnimation("right_walk", [ 4, 5, 6, 7 ]);
                     })
                     .withComponent(TWE.PlayerGridMovementController)
                     .withComponent(TWE.MovementAnimationController)
