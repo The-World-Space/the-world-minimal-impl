@@ -4,6 +4,8 @@ import * as THREE from "three/src/Three";
 import CharacterSprite1 from "@/res/character_sprite1.png";
 import TrrainSpriteAtlas from "@/res/terrain.png";
 
+import { UIBuilder } from "./scripts/UIBuilder";
+
 export class Bootstrapper extends TWE.Bootstrapper {
     public run(): TWE.SceneBuilder {
 
@@ -13,31 +15,8 @@ export class Bootstrapper extends TWE.Bootstrapper {
 
         return this.sceneBuilder
             .withChild(
-                this.instantiater.buildGameObject("player")
-                    .withComponent(TWE.CssSpriteAtlasRenderer, c => {
-                        c.asyncSetImageFromPath(CharacterSprite1, 4, 4);
-                        c.imageWidth = 1;
-                        c.imageHeight = 2;
-                        c.viewScale = 1;
-                        c.centerOffset = new THREE.Vector2(0, 0.3);
-                    })
-                    .withComponent(TWE.SpriteAtlasAnimator, c => {
-                        c.frameDuration = 0.1;
-                        c.addAnimation("up_idle", [ 8 ]);
-                        c.addAnimation("up_walk", [ 8, 9, 10, 11 ]);
-                        c.addAnimation("down_idle", [ 0 ]);
-                        c.addAnimation("down_walk", [ 0, 1, 2, 3 ]);
-                        c.addAnimation("left_idle", [ 12 ]);
-                        c.addAnimation("left_walk", [ 12, 13, 14, 15 ]);
-                        c.addAnimation("right_idle", [ 4 ]);
-                        c.addAnimation("right_walk", [ 4, 5, 6, 7 ]);
-                    })
-                    .withComponent(TWE.PlayerGridMovementController, c => {
-                        c.addCollideMap(collideMap.ref!);
-                        c.speed = 4;
-                    })
-                    .withComponent(TWE.MovementAnimationController)
-                    .getGameObject(playerGameObject)
+                this.instantiater.buildGameObject("game-manager")
+                    .withComponent(UIBuilder, c => c.enabled = true)
             )
             .withChild(
                 this.instantiater.buildGameObject("tile-map-front", new THREE.Vector3(0, 0, 2))
@@ -139,7 +118,34 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     .getComponent(TWE.GridCollideMap, collideMap)
             )
             .withChild(
-                this.instantiater.buildGameObject("poioter", new THREE.Vector3(0, 0, 4))
+                this.instantiater.buildGameObject("player")
+                    .withComponent(TWE.CssSpriteAtlasRenderer, c => {
+                        c.asyncSetImageFromPath(CharacterSprite1, 4, 4);
+                        c.imageWidth = 1;
+                        c.imageHeight = 2;
+                        c.viewScale = 1;
+                        c.centerOffset = new THREE.Vector2(0, 0.3);
+                    })
+                    .withComponent(TWE.SpriteAtlasAnimator, c => {
+                        c.frameDuration = 0.1;
+                        c.addAnimation("up_idle", [ 8 ]);
+                        c.addAnimation("up_walk", [ 8, 9, 10, 11 ]);
+                        c.addAnimation("down_idle", [ 0 ]);
+                        c.addAnimation("down_walk", [ 0, 1, 2, 3 ]);
+                        c.addAnimation("left_idle", [ 12 ]);
+                        c.addAnimation("left_walk", [ 12, 13, 14, 15 ]);
+                        c.addAnimation("right_idle", [ 4 ]);
+                        c.addAnimation("right_walk", [ 4, 5, 6, 7 ]);
+                    })
+                    .withComponent(TWE.PlayerGridMovementController, c => {
+                        c.addCollideMap(collideMap.ref!);
+                        c.speed = 4;
+                    })
+                    .withComponent(TWE.MovementAnimationController)
+                    .getGameObject(playerGameObject)
+            )
+            .withChild(
+                this.instantiater.buildGameObject("pointer", new THREE.Vector3(0, 0, 4))
                     .withComponent(TWE.PointerGridInputListener)
                     .withComponent(TWE.GridPointer)
                     .getComponent(TWE.GridPointer, gridPointer)

@@ -1,3 +1,6 @@
+import css from "./index.css";
+css;
+
 import * as TWE from "the-world-engine";
 
 import { Bootstrapper } from "@/game/Bootstrapper";

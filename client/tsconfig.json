@@ -22,7 +22,9 @@
             "@/*": [
                 "./*"
             ]
-        }
+        },
+        "jsx": "react-jsx",
+        "jsxImportSource": "nano-jsx/esm"
     },
     "ts-node": {
         "compilerOptions": {

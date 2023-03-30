@@ -28,7 +28,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             },
             {
                 test: /\.css$/,
-                type: "asset"
+                use: ["style-loader", "css-loader"]
             }
         ]
     },
