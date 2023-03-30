@@ -45,7 +45,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             template: "./src/index.html"
         }),
         new ESLintPlugin({
-            extensions: ["ts"],
+            extensions: ["ts", "tsx"],
             fix: true,
             cache: true
         })
