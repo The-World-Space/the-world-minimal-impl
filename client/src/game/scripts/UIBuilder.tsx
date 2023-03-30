@@ -12,8 +12,20 @@ export class UIBuilder extends TWE.Component {
 
     private createUI(): any {
         return (
-            <div class={css.outer}>
-
+            <div class={css.outerPanel}>
+                <button class={css.closeButton}>X</button>
+                <div>
+                    <label>
+                        <input type="radio" name="test" value="1" />
+                        Test
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="radio" name="test" value="2" />
+                        Test
+                    </label>
+                </div>
             </div>
         );
     }

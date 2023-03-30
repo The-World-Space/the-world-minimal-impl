@@ -5,7 +5,7 @@ import { Bootstrapper } from "@/game/Bootstrapper";
 import css from "./index.css";
 css;
 
-const gameView = window.document.getElementById("game_view")!;
+const gameView = window.document.getElementById("game-view")!;
 const game = new TWE.Game(gameView);
 game.inputHandler.startHandleEvents();
 game.run(Bootstrapper);
