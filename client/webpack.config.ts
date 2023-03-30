@@ -12,9 +12,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
     entry: "./src/index.ts",
     output: {
         path: path.join(__dirname, "/dist"),
-        filename: "[name].[contenthash].js",
-        chunkFilename: '[id].[contenthash].css',
-        assetModuleFilename: "assets/[name][ext]",
+        filename: "[name].bundle.js",
         clean: true
     },
     optimization: {
@@ -33,10 +31,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             },
         }
     },
-    cache: {
-        type: "memory",
-        cacheUnaffected: true
-    },
+    cache: false,
     module: {
         rules: [
             {
@@ -45,7 +40,11 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                type: "asset"
+                loader: "file-loader",
+                options: {
+                    name: "[name].[hash:8].[ext]",
+                    outputPath: "assets"
+                }
             },
             {
                 test: /\.html$/,
@@ -92,8 +91,8 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
             template: "./src/index.html"
         }),
         new ExtractCssChunks({
-            filename: devMode ? "[name].css" : "[name].[hash].css",
-            chunkFilename: devMode ? "[id].css" : "[id].[hash].css"
+            filename: "[name].css",
+            chunkFilename: "[id].css"
         }) as any,
         new ESLintPlugin({
             extensions: ["ts", "tsx"],
@@ -108,7 +107,8 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
         client: {
             logging: "none"
         },
-        hot: true
+        hot: true,
+        watchFiles: ["src/**/*"]
     },
     mode: devMode ? "development" : "production",
 };
