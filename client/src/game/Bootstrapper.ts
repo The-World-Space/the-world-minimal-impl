@@ -9,49 +9,17 @@ export class Bootstrapper extends TWE.Bootstrapper {
 
         const playerGameObject = new TWE.PrefabRef<TWE.GameObject>();
         const collideMap = new TWE.PrefabRef<TWE.GridCollideMap>();
+        const gridPointer = new TWE.PrefabRef<TWE.GridPointer>();
 
         return this.sceneBuilder
             .withChild(
-                this.instantiater.buildGameObject("camera-root")
-                    .withComponent(class Rotator extends TWE.Component {
-                        public override readonly executionOrder = 0;
-
-                        private _currentX = 0;
-                        private readonly _rotationSpeed = 0.5;
-
-                        public update(): void {
-                            this._currentX += this.engine.time.deltaTime * this._rotationSpeed;
-                            this._currentX %= Math.PI * 2;
-
-                            this.gameObject.transform.eulerAngles.y = Math.sin(this._currentX) * 0.05;
-                        }
-                    }, c => {
-                        c.enabled = false;
-                    })
-                    .withChild(
-                        this.instantiater.buildGameObject("camera",
-                            new THREE.Vector3(0, 0, 8),
-                            new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, 0))
-                        )
-                            .withComponent(TWE.Camera, c => {
-                                c.cameraType = TWE.CameraType.Orthographic;
-                            })
-                            .withComponent(class extends TWE.TrackCameraController {
-                                public override readonly executionOrder = 1;
-                            }, c => {
-                                c.enabled = true;
-                                c.setTrackTarget(playerGameObject.ref!);
-                            })
-                    )
-            )
-            .withChild(
-                this.instantiater.buildGameObject("player", new THREE.Vector3())
+                this.instantiater.buildGameObject("player")
                     .withComponent(TWE.CssSpriteAtlasRenderer, c => {
                         c.asyncSetImageFromPath(CharacterSprite1, 4, 4);
                         c.imageWidth = 1;
                         c.imageHeight = 2;
                         c.viewScale = 1;
-                        c.centerOffset = new THREE.Vector2(0, 0.4);
+                        c.centerOffset = new THREE.Vector2(0, 0.3);
                     })
                     .withComponent(TWE.SpriteAtlasAnimator, c => {
                         c.frameDuration = 0.1;
@@ -72,14 +40,7 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     .getGameObject(playerGameObject)
             )
             .withChild(
-                this.instantiater.buildGameObject("tile-object", new THREE.Vector3())
-                    .withComponent(TWE.CssSpriteRenderer, c => {
-                        c.imageWidth = 1;
-                        c.imageHeight = 1;
-                    })
-            )
-            .withChild(
-                this.instantiater.buildGameObject("tile-map")
+                this.instantiater.buildGameObject("tile-map-front", new THREE.Vector3(0, 0, 2))
                     .withComponent(TWE.CssTilemapChunkRenderer, async c => {
                         const image = await TWE.AsyncImageLoader.loadImageFromPath(TrrainSpriteAtlas);
                         if (!c.exists) return;
@@ -108,17 +69,108 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     })
             )
             .withChild(
+                this.instantiater.buildGameObject("tile-map-back", new THREE.Vector3(0, 0, -2))
+                    .withComponent(TWE.CssTilemapChunkRenderer, async c => {
+                        const image = await TWE.AsyncImageLoader.loadImageFromPath(TrrainSpriteAtlas);
+                        if (!c.exists) return;
+
+                        c.imageSources = [ new TWE.TileAtlasItem(image, 16, 16) ];
+                        c.chunkSize = 15;
+
+                        const converter = {
+                            /* eslint-disable @typescript-eslint/naming-convention */
+                            " ": () => null,
+                            "F": () => ({ i: 0, a: 1})
+                            /* eslint-enable @typescript-eslint/naming-convention */
+                        };
+
+                        c.drawTileFromTwoDimensionalArray(
+                            TWE.TwoDimensionalStringMapper.map(
+                                [
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF",
+                                    "FFFFFFFFFFFFFFFFFFF"
+                                ],
+                                converter
+                            ),
+                            -Math.floor(19 / 2), -Math.floor(19 / 2)
+                        );
+                    })
+            )
+            .withChild(
                 this.instantiater.buildGameObject("collide-map")
                     .withComponent(TWE.GridCollideMap, c => {
                         c.showCollider = true;
 
-                        c.addColliderFromTwoDimensionalArray([
-                            [0, 1, 0],
-                            [1, 0, 1],
-                            [1, 0, 1]
-                        ], -1, 0);
+                        const converter = {
+                            /* eslint-disable @typescript-eslint/naming-convention */
+                            " ": () => 0 as const,
+                            "X": () => 1 as const
+                            /* eslint-enable @typescript-eslint/naming-convention */
+                        };
+
+                        c.addColliderFromTwoDimensionalArray(
+                            TWE.TwoDimensionalStringMapper.map(
+                                [
+                                    " X ",
+                                    "X X",
+                                    "X X"
+                                ],
+                                converter
+                            ), -1, 0
+                        );
                     })
                     .getComponent(TWE.GridCollideMap, collideMap)
+            )
+            .withChild(
+                this.instantiater.buildGameObject("poioter", new THREE.Vector3(0, 0, 4))
+                    .withComponent(TWE.PointerGridInputListener)
+                    .withComponent(TWE.GridPointer)
+                    .getComponent(TWE.GridPointer, gridPointer)
+            )
+            .withChild(
+                this.instantiater.buildGameObject("camera")
+                    .withComponent(TWE.Camera, c => {
+                        c.cameraType = TWE.CameraType.Orthographic;
+                        c.viewSize = 6;
+                    })
+                    .withComponent(TWE.TrackCameraController, c => {
+                        c.enabled = true;
+                        c.cameraDistanceOffset = 8;
+                        c.targetOffset = new THREE.Vector2(0, 0.5);
+                        c.smoothTrack = true;
+                        c.smoothLambda = 12;
+                        c.setTrackTarget(playerGameObject.ref!);
+                    })
+                    .withComponent(class Rotator extends TWE.Component {
+                        private _currentX = 0;
+                        private readonly _rotationSpeed = 0.5;
+
+                        public update(): void {
+                            this._currentX += this.engine.time.deltaTime * this._rotationSpeed;
+                            this._currentX %= Math.PI * 2;
+
+                            this.gameObject.transform.eulerAngles.y = Math.sin(this._currentX) * 0.05;
+                        }
+                    }, c => {
+                        c.enabled = false;
+                    })
             )
         ;
     }
