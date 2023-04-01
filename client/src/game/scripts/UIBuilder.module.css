@@ -1,3 +1,8 @@
+.render-root {
+    width: 100%;
+    height: 100%;
+}
+
 .outer-panel {
     position: absolute;
     top: 0;
