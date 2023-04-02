@@ -110,7 +110,7 @@ const config: webpack.Configuration & { devServer?: WebpackDevServerConfiguratio
         hot: true,
         watchFiles: ["src/**/*"]
     },
-    mode: devMode ? "development" : "production",
+    mode: devMode ? "development" : "production"
 };
 
 export default config;
