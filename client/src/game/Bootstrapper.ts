@@ -5,6 +5,7 @@ import CharacterSprite1 from "@/res/character_sprite1.png";
 import TrrainSpriteAtlas from "@/res/terrain.png";
 
 import { UIBuilder } from "./scripts/UIBuilder";
+import { UIPresenter } from "./scripts/UIPresenter";
 
 export class Bootstrapper extends TWE.Bootstrapper {
     public run(): TWE.SceneBuilder {
@@ -17,6 +18,7 @@ export class Bootstrapper extends TWE.Bootstrapper {
             .withChild(
                 this.instantiater.buildGameObject("game-manager")
                     .withComponent(UIBuilder, c => c.enabled = true)
+                    .withComponent(UIPresenter)
             )
             .withChild(
                 this.instantiater.buildGameObject("tile-map-front", new THREE.Vector3(0, 0, 2))
