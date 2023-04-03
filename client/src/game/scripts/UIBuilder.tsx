@@ -58,13 +58,13 @@ export class UIBuilder extends TWE.Component {
                         <legend>Brush Mode</legend>
                         <div>
                             <input type="radio" id={UIBuilder._brushModeTilemapFrontUid} name="brush_mode" />
-                            <label for="tm_f"> tilemap front </label>
+                            <label for={UIBuilder._brushModeTilemapFrontUid}> tilemap front </label>
 
                             <input type="radio" id={UIBuilder._brushModeTilemapBackUid} name="brush_mode" />
-                            <label for="tm_b"> tilemap back </label>
+                            <label for={UIBuilder._brushModeTilemapBackUid}> tilemap back </label>
 
                             <input type="radio" id={UIBuilder._brushModeColliderUid} name="brush_mode" />
-                            <label for="col"> collider </label>
+                            <label for={UIBuilder._brushModeColliderUid}> collider </label>
                         </div>
                     </fieldset>
                 </form>
