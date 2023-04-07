@@ -3,6 +3,89 @@ import * as TWE from "the-world-engine";
 
 import css from "./UiBuilder.module.css";
 
+type GameHtmlListViewItem = {
+    title: string;
+    image: string;
+    imageStyle: string;
+}
+
+class GameHtmlListView {
+    private _parent: HTMLElement | null;
+    private readonly _root: HTMLElement;
+    private readonly _items: GameHtmlListViewItem[];
+    private readonly _itemViews: HTMLElement[];
+
+    public constructor() {
+        this._parent = null;
+        this._root = Nano.render(<this.renderUI />);
+        this._items = [];
+        this._itemViews = [];
+    }
+
+    public mount(parent: HTMLElement): void {
+        this._parent = parent;
+        this._parent.appendChild(this._root);
+    }
+
+    public unmount(): void {
+        if (this._parent !== null) this._parent.removeChild(this._root);
+        this._parent = null;
+    }
+
+    public get items(): readonly GameHtmlListViewItem[] {
+        return this._items;
+    }
+
+    public addItem(item: GameHtmlListViewItem): void {
+        this._items.push(item);
+        const itemView = Nano.render(
+            <this.renderListItem
+                title={item.title}
+                image={item.image}
+                imageStyle={item.imageStyle} />);
+        this._itemViews.push(itemView);
+        this._root.appendChild(itemView);
+    }
+
+    public updateItem(index: number, item: GameHtmlListViewItem): void {
+        this._items[index] = item;
+        const itemView = this._itemViews[index];
+
+        this._root.replaceChild(
+            itemView,
+            Nano.render(
+                <this.renderListItem
+                    title={item.title}
+                    image={item.image}
+                    imageStyle={item.imageStyle} />,
+                itemView
+            )
+        );
+    }
+
+    public removeItem(index: number): void {
+        this._items.splice(index, 1);
+        const itemView = this._itemViews.splice(index, 1)[0];
+        this._root.removeChild(itemView);
+    }
+
+    private renderUI(): any {
+        return (
+            <div class={css.listViewPanel}>
+            </div>
+        );
+    }
+
+    private renderListItem(item: GameHtmlListViewItem): any {
+        return (
+            <div class={css.listViewItem}>
+                <div class={css.listViewItemTitle}>{item.title}</div>
+                <img src={item.image} style={item.imageStyle} />
+            </div>
+        );
+    }
+}
+
 export class UIBuilder extends TWE.Component {
     private static readonly _brushModeTilemapFrontUid = "tm_f" + Math.random();
     private static readonly _brushModeTilemapBackUid = "tm_b" + Math.random();
@@ -18,6 +101,15 @@ export class UIBuilder extends TWE.Component {
     public start(): void {
         this.renderUIBaseComponent();
         this.initializeUI();
+
+        const listview = new GameHtmlListView();
+        listview.mount(this._panel!);
+
+        listview.addItem({
+            title: "test",
+            image: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
+            imageStyle: "width: 100px; height: 100px;"
+        });
     }
 
     public onDestroy(): void {

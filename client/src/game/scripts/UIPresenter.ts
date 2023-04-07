@@ -8,7 +8,7 @@ export class UIPresenter extends TWE.Component {
 
     private _uiBuilder: UIBuilder | null = null;
 
-    private _isPanelOpen = false;
+    private _isPanelOpen = true;
 
     public awake(): void {
         this._uiBuilder = this.gameObject.getComponent(UIBuilder);
