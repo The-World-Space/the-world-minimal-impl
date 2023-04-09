@@ -3,13 +3,14 @@ import * as TWE from "the-world-engine";
 
 import css from "./UiBuilder.module.css";
 
-type GameHtmlListViewItem = {
+export type GameHtmlListViewItem = {
     title: string;
     image: string;
     imageStyle: string;
-}
+    onClick?: (item: GameHtmlListViewItem) => void;
+};
 
-class GameHtmlListView {
+export class GameHtmlListView {
     private _parent: HTMLElement | null;
     private readonly _root: HTMLElement;
     private readonly _items: GameHtmlListViewItem[];
@@ -42,7 +43,8 @@ class GameHtmlListView {
             <this.renderListItem
                 title={item.title}
                 image={item.image}
-                imageStyle={item.imageStyle} />);
+                imageStyle={item.imageStyle}
+                onClick={item.onClick} />);
         this._itemViews.push(itemView);
         this._root.appendChild(itemView);
     }
@@ -57,7 +59,8 @@ class GameHtmlListView {
                 <this.renderListItem
                     title={item.title}
                     image={item.image}
-                    imageStyle={item.imageStyle} />,
+                    imageStyle={item.imageStyle}
+                    onClick={item.onClick} />,
                 itemView
             )
         );
@@ -69,6 +72,11 @@ class GameHtmlListView {
         this._root.removeChild(itemView);
     }
 
+    public removeItemByValue(item: GameHtmlListViewItem): void {
+        const index = this._items.indexOf(item);
+        if (index >= 0) this.removeItem(index);
+    }
+
     private renderUI(): any {
         return (
             <div class={css.listViewPanel}>
@@ -77,12 +85,21 @@ class GameHtmlListView {
     }
 
     private renderListItem(item: GameHtmlListViewItem): any {
-        return (
-            <div class={css.listViewItem}>
-                <div class={css.listViewItemTitle}>{item.title}</div>
-                <img src={item.image} style={item.imageStyle} />
-            </div>
-        );
+        if (item.onClick !== undefined) {
+            return (
+                <div class={css.listViewItem} onClick={(): void => item.onClick!(item)}>
+                    <div class={css.listViewItemTitle}>{item.title}</div>
+                    <img src={item.image} style={item.imageStyle} />
+                </div>
+            );
+        } else {
+            return (
+                <div class={css.listViewItem}>
+                    <div class={css.listViewItemTitle}>{item.title}</div>
+                    <img src={item.image} style={item.imageStyle} />
+                </div>
+            );
+        }
     }
 }
 
@@ -101,15 +118,6 @@ export class UIBuilder extends TWE.Component {
     public start(): void {
         this.renderUIBaseComponent();
         this.initializeUI();
-
-        const listview = new GameHtmlListView();
-        listview.mount(this._panel!);
-
-        listview.addItem({
-            title: "test",
-            image: "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png",
-            imageStyle: "width: 100px; height: 100px;"
-        });
     }
 
     public onDestroy(): void {

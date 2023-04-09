@@ -1,6 +1,8 @@
 #render-root {
     width: 100%;
     height: 100%;
+
+    font-family: 'Roboto', sans-serif;
 }
 
 #outer-panel {
@@ -19,7 +21,7 @@
 }
 
 .panel-open {
-    right: calc(min(60%,100% - ));
+    right: calc(max(100% - 500px, 60%));
 }
 
 .panel-closed {
@@ -32,6 +34,9 @@
     right: -30px;
     width: 30px;
     height: 30px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
 }
 
 .list-view-panel {
@@ -42,6 +47,45 @@
     
     overflow-y: scroll;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
+.list-view-panel::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #aaa; /* or add it to the track */
+}
+
+.list-view-panel::-webkit-scrollbar-thumb {
+    background-color: #555;
+}
+
+.list-view-item {
+    width: 100px;
+    height: 120px;
+    margin: 8px;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.list-view-item:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.list-view-item:active {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.list-view-item-title {
+    color: white;
+    text-align: center;
+    margin: auto;
 }
