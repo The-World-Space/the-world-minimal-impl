@@ -33,13 +33,12 @@ export class UIPresenter extends TWE.Component {
 
     public start(): void {
         this.handleBaseComponentEvents();
-
-        this.panelToggleUpdate();
+        this.panelUpdate();
     }
 
     public onDestroy(): void {
         this.unhandleBaseComponentEvents();
-
+        this._listView?.unmount();
         this._uiBuilder = null;
     }
 
@@ -71,10 +70,24 @@ export class UIPresenter extends TWE.Component {
 
     public readonly panelToggle = (): void => {
         this._isPanelOpen = !this._isPanelOpen;
-        this.panelToggleUpdate();
+        this.panelUpdate();
     };
 
-    private panelToggleUpdate(): void {
+    public panelOpen(): void {
+        if (this._isPanelOpen) return;
+
+        this._isPanelOpen = true;
+        this.panelUpdate();
+    }
+
+    public panelClose(): void {
+        if (!this._isPanelOpen) return;
+
+        this._isPanelOpen = false;
+        this.panelUpdate();
+    }
+
+    private panelUpdate(): void {
         if (!this._uiBuilder) return;
         const panel = this._uiBuilder.panel;
         if (!panel) return;
@@ -87,7 +100,8 @@ export class UIPresenter extends TWE.Component {
 
             panelToggleButton.innerText = "<";
 
-            this.brushModeChange(BrushMode.TilemapFront);
+            this.brushModeChange(this._brushMode);
+            this.brushTypeChange(this._brushType);
         } else {
             panel.classList.add(css.panelClosed);
             panel.classList.remove(css.panelOpen);
@@ -102,7 +116,7 @@ export class UIPresenter extends TWE.Component {
 
     private readonly brushModeChangeToCollider = (): void => this.brushModeChange(BrushMode.Collider);
 
-    public readonly brushModeChange = (brushMode: BrushMode): void => {
+    public brushModeChange(brushMode: BrushMode): void {
         this._brushMode = brushMode;
 
         const uiBuilder = this._uiBuilder!;
@@ -129,7 +143,7 @@ export class UIPresenter extends TWE.Component {
         }
 
         this.brushModeUpdate();
-    };
+    }
 
     private brushModeUpdate(): void {
         const uiBuilder = this._uiBuilder;
@@ -156,7 +170,7 @@ export class UIPresenter extends TWE.Component {
 
     private readonly brushTypeChangeToErase = (): void => this.brushTypeChange(BrushType.Erase);
 
-    public readonly brushTypeChange = (brushType: BrushType): void => {
+    public brushTypeChange(brushType: BrushType): void {
         this._brushType = brushType;
 
         const uiBuilder = this._uiBuilder!;
@@ -174,7 +188,7 @@ export class UIPresenter extends TWE.Component {
                 brushTypeErase!.checked = newState;
             }
         }
-    };
+    }
 
     public get brushMode(): BrushMode {
         return this._brushMode;
