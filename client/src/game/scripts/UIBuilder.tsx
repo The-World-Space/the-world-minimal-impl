@@ -153,7 +153,7 @@ export class UIBuilder extends TWE.Component {
     }
 
     private initializeUI(): void {
-        this._panel = document.getElementById(css.outerPanel) as HTMLDivElement;
+        this._panel = document.getElementById(css.innerPanel) as HTMLDivElement;
         this._panelTogggleButton = document.getElementById(css.closeButton) as HTMLButtonElement;
 
         this._brushModeTilemapFront = document.getElementById(UIBuilder._brushModeTilemapFrontUid) as HTMLInputElement;
@@ -167,32 +167,34 @@ export class UIBuilder extends TWE.Component {
     private baseUI(): any {
         return (
             <div id={css.outerPanel} class={css.panelOpen}>
-                <button id={css.closeButton}>X</button>
-                <form>
-                    <fieldset>
-                        <legend>Brush Mode</legend>
-                        <div>
-                            <input type="radio" id={UIBuilder._brushModeTilemapFrontUid} name="brush_mode" />
-                            <label for={UIBuilder._brushModeTilemapFrontUid}> tilemap front </label>
+                <div id={css.innerPanel}>
+                    <button id={css.closeButton}>X</button>
+                    <form>
+                        <fieldset>
+                            <legend>Brush Mode</legend>
+                            <div>
+                                <input type="radio" id={UIBuilder._brushModeTilemapFrontUid} name="brush_mode" />
+                                <label for={UIBuilder._brushModeTilemapFrontUid}> tilemap front </label>
 
-                            <input type="radio" id={UIBuilder._brushModeTilemapBackUid} name="brush_mode" />
-                            <label for={UIBuilder._brushModeTilemapBackUid}> tilemap back </label>
+                                <input type="radio" id={UIBuilder._brushModeTilemapBackUid} name="brush_mode" />
+                                <label for={UIBuilder._brushModeTilemapBackUid}> tilemap back </label>
 
-                            <input type="radio" id={UIBuilder._brushModeColliderUid} name="brush_mode" />
-                            <label for={UIBuilder._brushModeColliderUid}> collider </label>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Brush Type</legend>
-                        <div>
-                            <input type="radio" id={UIBuilder._brushTypeDrawUid} name="brush_type" />
-                            <label for={UIBuilder._brushTypeDrawUid}> draw </label>
+                                <input type="radio" id={UIBuilder._brushModeColliderUid} name="brush_mode" />
+                                <label for={UIBuilder._brushModeColliderUid}> collider </label>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Brush Type</legend>
+                            <div>
+                                <input type="radio" id={UIBuilder._brushTypeDrawUid} name="brush_type" />
+                                <label for={UIBuilder._brushTypeDrawUid}> draw </label>
 
-                            <input type="radio" id={UIBuilder._brushTypeEraseUid} name="brush_type" />
-                            <label for={UIBuilder._brushTypeEraseUid}> erase </label>
-                        </div>
-                    </fieldset>
-                </form>
+                                <input type="radio" id={UIBuilder._brushTypeEraseUid} name="brush_type" />
+                                <label for={UIBuilder._brushTypeEraseUid}> erase </label>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         );
     }
