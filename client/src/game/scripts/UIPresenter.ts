@@ -89,22 +89,22 @@ export class UIPresenter extends TWE.Component {
 
     private panelUpdate(): void {
         if (!this._uiBuilder) return;
-        const panel = this._uiBuilder.panel;
-        if (!panel) return;
+        const outerPanel = this._uiBuilder.outerPanel;
+        if (!outerPanel) return;
         const panelToggleButton = this._uiBuilder.panelTogggleButton;
         if (!panelToggleButton) return;
 
         if (this._isPanelOpen) {
-            panel.classList.add(css.panelOpen);
-            panel.classList.remove(css.panelClosed);
+            outerPanel.classList.add(css.panelOpen);
+            outerPanel.classList.remove(css.panelClosed);
 
             panelToggleButton.innerText = "<";
 
             this.brushModeChange(this._brushMode);
             this.brushTypeChange(this._brushType);
         } else {
-            panel.classList.add(css.panelClosed);
-            panel.classList.remove(css.panelOpen);
+            outerPanel.classList.add(css.panelClosed);
+            outerPanel.classList.remove(css.panelOpen);
 
             panelToggleButton.innerText = ">";
         }

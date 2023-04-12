@@ -112,6 +112,7 @@ export class UIBuilder extends TWE.Component {
     private static readonly _brushTypeEraseUid = "erase" + Math.random();
 
     private _renderRoot: HTMLDivElement | null = null;
+    private _outerPanel: HTMLDivElement | null = null;
     private _panel: HTMLDivElement | null = null;
     private _panelTogggleButton: HTMLButtonElement | null = null;
 
@@ -130,6 +131,7 @@ export class UIBuilder extends TWE.Component {
     public onDestroy(): void {
         if (this._renderRoot !== null) this._renderRoot.remove();
         this._renderRoot = null;
+        this._outerPanel = null;
         this._panel = null;
         this._panelTogggleButton = null;
 
@@ -153,6 +155,7 @@ export class UIBuilder extends TWE.Component {
     }
 
     private initializeUI(): void {
+        this._outerPanel = document.getElementById(css.outerPanel) as HTMLDivElement;
         this._panel = document.getElementById(css.innerPanel) as HTMLDivElement;
         this._panelTogggleButton = document.getElementById(css.closeButton) as HTMLButtonElement;
 
@@ -169,7 +172,7 @@ export class UIBuilder extends TWE.Component {
             <div id={css.outerPanel} class={css.panelOpen}>
                 <div id={css.innerPanel}>
                     <button id={css.closeButton}>X</button>
-                    <form>
+                    <form id={css.brushForm}>
                         <fieldset>
                             <legend>Brush Mode</legend>
                             <div>
@@ -197,6 +200,10 @@ export class UIBuilder extends TWE.Component {
                 </div>
             </div>
         );
+    }
+
+    public get outerPanel(): HTMLDivElement | null {
+        return this._outerPanel;
     }
 
     public get panel(): HTMLDivElement | null {
