@@ -108,12 +108,19 @@ export class UIBuilder extends TWE.Component {
     private static readonly _brushModeTilemapBackUid = "tm_b" + Math.random();
     private static readonly _brushModeColliderUid = "col" + Math.random();
 
+    private static readonly _brushTypeDrawUid = "draw" + Math.random();
+    private static readonly _brushTypeEraseUid = "erase" + Math.random();
+
     private _renderRoot: HTMLDivElement | null = null;
     private _panel: HTMLDivElement | null = null;
     private _panelTogggleButton: HTMLButtonElement | null = null;
+
     private _brushModeTilemapFront: HTMLInputElement | null = null;
     private _brushModeTilemapBack: HTMLInputElement | null = null;
     private _brushModeCollider: HTMLInputElement | null = null;
+
+    private _brushTypeDraw: HTMLInputElement | null = null;
+    private _brushTypeErase: HTMLInputElement | null = null;
 
     public start(): void {
         this.renderUIBaseComponent();
@@ -125,9 +132,13 @@ export class UIBuilder extends TWE.Component {
         this._renderRoot = null;
         this._panel = null;
         this._panelTogggleButton = null;
+
         this._brushModeTilemapFront = null;
         this._brushModeTilemapBack = null;
         this._brushModeCollider = null;
+
+        this._brushTypeDraw = null;
+        this._brushTypeErase = null;
     }
 
     private renderUIBaseComponent(): void {
@@ -144,9 +155,13 @@ export class UIBuilder extends TWE.Component {
     private initializeUI(): void {
         this._panel = document.getElementById(css.outerPanel) as HTMLDivElement;
         this._panelTogggleButton = document.getElementById(css.closeButton) as HTMLButtonElement;
+
         this._brushModeTilemapFront = document.getElementById(UIBuilder._brushModeTilemapFrontUid) as HTMLInputElement;
         this._brushModeTilemapBack = document.getElementById(UIBuilder._brushModeTilemapBackUid) as HTMLInputElement;
         this._brushModeCollider = document.getElementById(UIBuilder._brushModeColliderUid) as HTMLInputElement;
+
+        this._brushTypeDraw = document.getElementById(UIBuilder._brushTypeDrawUid) as HTMLInputElement;
+        this._brushTypeErase = document.getElementById(UIBuilder._brushTypeEraseUid) as HTMLInputElement;
     }
 
     private baseUI(): any {
@@ -165,6 +180,16 @@ export class UIBuilder extends TWE.Component {
 
                             <input type="radio" id={UIBuilder._brushModeColliderUid} name="brush_mode" />
                             <label for={UIBuilder._brushModeColliderUid}> collider </label>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Brush Type</legend>
+                        <div>
+                            <input type="radio" id={UIBuilder._brushTypeDrawUid} name="brush_type" />
+                            <label for={UIBuilder._brushTypeDrawUid}> draw </label>
+
+                            <input type="radio" id={UIBuilder._brushTypeEraseUid} name="brush_type" />
+                            <label for={UIBuilder._brushTypeEraseUid}> erase </label>
                         </div>
                     </fieldset>
                 </form>
@@ -190,5 +215,13 @@ export class UIBuilder extends TWE.Component {
 
     public get brushModeCollider(): HTMLInputElement | null {
         return this._brushModeCollider;
+    }
+
+    public get brushTypeDraw(): HTMLInputElement | null {
+        return this._brushTypeDraw;
+    }
+
+    public get brushTypeErase(): HTMLInputElement | null {
+        return this._brushTypeErase;
     }
 }
