@@ -1,5 +1,6 @@
 import * as TWE from "the-world-engine";
 
+import type { GameHtmlListViewItem } from "./UIBuilder";
 import { GameHtmlListView } from "./UIBuilder";
 import { UIBuilder } from "./UIBuilder";
 import css from "./UiBuilder.module.css";
@@ -15,7 +16,16 @@ enum BrushType {
     Erase
 }
 
-export class UIPresenter extends TWE.Component {
+export type AtlasListItem = Readonly<{
+    title: string;
+    image: string;
+    rowCount: number;
+    columnCount: number;
+    index: number;
+    onClick?: (item: AtlasListItem) => void;
+}>
+
+export class UIView extends TWE.Component {
     public override readonly requiredComponents = [UIBuilder];
 
     private _uiBuilder: UIBuilder | null = null;
@@ -26,6 +36,7 @@ export class UIPresenter extends TWE.Component {
     private _brushType = BrushType.Draw;
 
     private _isListViewMounted = false;
+    private readonly _listViewItemMap = new Map<AtlasListItem, GameHtmlListViewItem>();
 
     public awake(): void {
         this._uiBuilder = this.gameObject.getComponent(UIBuilder);
@@ -39,6 +50,7 @@ export class UIPresenter extends TWE.Component {
     public onDestroy(): void {
         this.unhandleBaseComponentEvents();
         this._listView?.unmount();
+        this._listViewItemMap.clear();
         this._uiBuilder = null;
     }
 
@@ -196,5 +208,27 @@ export class UIPresenter extends TWE.Component {
 
     public get brushType(): BrushType {
         return this._brushType;
+    }
+
+    public addTilemapListItem(item: AtlasListItem): void {
+        if (this._listView === null) {
+            this._listView = new GameHtmlListView();
+        }
+
+        this._listView.addItem({
+            title: item.title,
+            image: item.image,
+            imageStyle: "",
+            onClick: () => item.onClick?.(item)
+        });
+    }
+
+    public removeTilemapListItem(item: AtlasListItem): void {
+        if (this._listView === null) return;
+
+        const listViewItem = this._listViewItemMap.get(item);
+        if (listViewItem === undefined) return;
+
+        this._listView.removeItemByValue(listViewItem);
     }
 }
