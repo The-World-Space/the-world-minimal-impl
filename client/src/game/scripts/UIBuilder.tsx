@@ -3,12 +3,12 @@ import * as TWE from "the-world-engine";
 
 import css from "./UiBuilder.module.css";
 
-export type GameHtmlListViewItem = {
+export type GameHtmlListViewItem = Readonly<{
     title: string;
     image: string;
     imageStyle: string;
     onClick?: (item: GameHtmlListViewItem) => void;
-};
+}>;
 
 export class GameHtmlListView {
     private _parent: HTMLElement | null;
