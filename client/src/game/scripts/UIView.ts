@@ -231,4 +231,10 @@ export class UIView extends TWE.Component {
 
         this._listView.removeItemByValue(listViewItem);
     }
+
+    public clearTilemapListItems(): void {
+        if (this._listView === null) return;
+
+        this._listView.clear();
+    }
 }

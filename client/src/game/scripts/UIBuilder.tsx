@@ -77,6 +77,12 @@ export class GameHtmlListView {
         if (index >= 0) this.removeItem(index);
     }
 
+    public clear(): void {
+        this._items.length = 0;
+        this._itemViews.length = 0;
+        this._root.innerHTML = "";
+    }
+
     private renderUI(): any {
         return (
             <div class={css.listViewPanel}>
