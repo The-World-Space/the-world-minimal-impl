@@ -4,8 +4,9 @@ import * as THREE from "three/src/Three";
 import CharacterSprite1 from "@/res/character_sprite1.png";
 import TrrainSpriteAtlas from "@/res/terrain.png";
 
+import { BrushController } from "./scripts/BrushController";
 import { UIBuilder } from "./scripts/UIBuilder";
-import { UIPresenter } from "./scripts/UIPresenter";
+import { UIView } from "./scripts/UIView";
 
 export class Bootstrapper extends TWE.Bootstrapper {
     public run(): TWE.SceneBuilder {
@@ -17,8 +18,11 @@ export class Bootstrapper extends TWE.Bootstrapper {
         return this.sceneBuilder
             .withChild(
                 this.instantiater.buildGameObject("game-manager")
-                    .withComponent(UIBuilder, c => c.enabled = true)
-                    .withComponent(UIPresenter)
+                    .withComponent(UIBuilder)
+                    .withComponent(UIView)
+                    .withComponent(BrushController, c => {
+                        c.gridPointer = gridPointer.ref;
+                    })
             )
             .withChild(
                 this.instantiater.buildGameObject("tile-map-front", new THREE.Vector3(0, 0, 2))
