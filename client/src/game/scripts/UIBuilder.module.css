@@ -61,6 +61,7 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-content: flex-start;
     padding: 0 4px;
     box-sizing: border-box;
 }
