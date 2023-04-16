@@ -215,10 +215,19 @@ export class UIView extends TWE.Component {
             this._listView = new GameHtmlListView();
         }
 
+        const verticalIndex = Math.floor(item.index / item.columnCount);
+        const horizontalIndex = item.index % item.columnCount;
+
+        const imageSize = 100;
+        let style = `width: ${imageSize}px; height: ${imageSize}px;`;
+        style += "object-fit: none; image-rendering: pixelated;";
+        style += `background-image: url(${item.image});`;
+        style += `background-size: ${item.columnCount * imageSize}px ${item.rowCount * imageSize}px;`;
+        style += `background-position: ${horizontalIndex * -imageSize}px ${verticalIndex * -imageSize}px;`;
+
         this._listView.addItem({
             title: item.title,
-            image: item.image,
-            imageStyle: "",
+            imageStyle: style,
             onClick: () => item.onClick?.(item)
         });
     }

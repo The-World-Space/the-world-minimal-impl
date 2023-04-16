@@ -5,7 +5,6 @@ import css from "./UiBuilder.module.css";
 
 export type GameHtmlListViewItem = Readonly<{
     title: string;
-    image: string;
     imageStyle: string;
     onClick?: (item: GameHtmlListViewItem) => void;
 }>;
@@ -42,7 +41,6 @@ export class GameHtmlListView {
         const itemView = Nano.render(
             <this.renderListItem
                 title={item.title}
-                image={item.image}
                 imageStyle={item.imageStyle}
                 onClick={item.onClick} />);
         this._itemViews.push(itemView);
@@ -58,7 +56,6 @@ export class GameHtmlListView {
             Nano.render(
                 <this.renderListItem
                     title={item.title}
-                    image={item.image}
                     imageStyle={item.imageStyle}
                     onClick={item.onClick} />,
                 itemView
@@ -95,14 +92,14 @@ export class GameHtmlListView {
             return (
                 <div class={css.listViewItem} onClick={(): void => item.onClick!(item)}>
                     <div class={css.listViewItemTitle}>{item.title}</div>
-                    <img src={item.image} style={item.imageStyle} />
+                    <div style={item.imageStyle} />
                 </div>
             );
         } else {
             return (
                 <div class={css.listViewItem}>
                     <div class={css.listViewItemTitle}>{item.title}</div>
-                    <img src={item.image} style={item.imageStyle} />
+                    <div style={item.imageStyle} />
                 </div>
             );
         }

@@ -24,7 +24,7 @@ export class BrushController extends TWE.Component {
     private testInit(): void {
         const listItems: AtlasListItem[] = [];
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 32; i++) {
             listItems.push({
                 title: `t:${i}`,
                 image: TrrainSpriteAtlas,
