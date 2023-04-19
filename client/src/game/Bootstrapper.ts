@@ -5,6 +5,7 @@ import CharacterSprite1 from "@/res/character_sprite1.png";
 import TrrainSpriteAtlas from "@/res/terrain.png";
 
 import { BrushController } from "./scripts/BrushController";
+import { GridBrush } from "./scripts/GridBrush";
 import { UIBuilder } from "./scripts/UIBuilder";
 import { UIView } from "./scripts/UIView";
 
@@ -12,8 +13,10 @@ export class Bootstrapper extends TWE.Bootstrapper {
     public run(): TWE.SceneBuilder {
 
         const playerGameObject = new TWE.PrefabRef<TWE.GameObject>();
+        const gridBrush = new TWE.PrefabRef<GridBrush>();
+        const frontTileMap = new TWE.PrefabRef<TWE.CssTilemapChunkRenderer>();
+        const backTileMap = new TWE.PrefabRef<TWE.CssTilemapChunkRenderer>();
         const collideMap = new TWE.PrefabRef<TWE.GridCollideMap>();
-        const gridPointer = new TWE.PrefabRef<TWE.GridPointer>();
 
         return this.sceneBuilder
             .withChild(
@@ -21,8 +24,17 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     .withComponent(UIBuilder)
                     .withComponent(UIView)
                     .withComponent(BrushController, c => {
-                        c.gridPointer = gridPointer.ref;
+                        c.gridBrush = gridBrush.ref;
+                        c.frontTileMap = frontTileMap.ref;
+                        c.backTileMap = backTileMap.ref;
+                        c.collideMap = collideMap.ref;
                     })
+            )
+            .withChild(
+                this.instantiater.buildGameObject("brush", new THREE.Vector3(0, 0, 4))
+                    .withComponent(TWE.PointerGridInputListener)
+                    .withComponent(GridBrush)
+                    .getComponent(GridBrush, gridBrush)
             )
             .withChild(
                 this.instantiater.buildGameObject("tile-map-front", new THREE.Vector3(0, 0, 2))
@@ -52,6 +64,7 @@ export class Bootstrapper extends TWE.Bootstrapper {
                             -1, 0
                         );
                     })
+                    .getComponent(TWE.CssTilemapChunkRenderer, frontTileMap)
             )
             .withChild(
                 this.instantiater.buildGameObject("tile-map-back", new THREE.Vector3(0, 0, -2))
@@ -97,12 +110,11 @@ export class Bootstrapper extends TWE.Bootstrapper {
                             -Math.floor(19 / 2), -Math.floor(19 / 2)
                         );
                     })
+                    .getComponent(TWE.CssTilemapChunkRenderer, backTileMap)
             )
             .withChild(
                 this.instantiater.buildGameObject("collide-map")
                     .withComponent(TWE.GridCollideMap, c => {
-                        c.showCollider = true;
-
                         const converter = {
                             /* eslint-disable @typescript-eslint/naming-convention */
                             " ": () => 0 as const,
@@ -149,12 +161,6 @@ export class Bootstrapper extends TWE.Bootstrapper {
                     })
                     .withComponent(TWE.MovementAnimationController)
                     .getGameObject(playerGameObject)
-            )
-            .withChild(
-                this.instantiater.buildGameObject("pointer", new THREE.Vector3(0, 0, 4))
-                    .withComponent(TWE.PointerGridInputListener)
-                    .withComponent(TWE.GridPointer)
-                    .getComponent(TWE.GridPointer, gridPointer)
             )
             .withChild(
                 this.instantiater.buildGameObject("camera")

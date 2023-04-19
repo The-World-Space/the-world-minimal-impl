@@ -5,13 +5,13 @@ import { GameHtmlListView } from "./UIBuilder";
 import { UIBuilder } from "./UIBuilder";
 import css from "./UiBuilder.module.css";
 
-enum BrushMode {
+export enum BrushMode {
     TilemapFront,
     TilemapBack,
     Collider
 }
 
-enum BrushType {
+export enum BrushType {
     Draw,
     Erase
 }
@@ -37,6 +37,8 @@ export class UIView extends TWE.Component {
 
     private _isListViewMounted = false;
     private readonly _listViewItemMap = new Map<AtlasListItem, GameHtmlListViewItem>();
+
+    private readonly _onBrushModeChangeEvent = new TWE.EventContainer<(mode: BrushMode) => void>();
 
     public awake(): void {
         this._uiBuilder = this.gameObject.getComponent(UIBuilder);
@@ -155,6 +157,8 @@ export class UIView extends TWE.Component {
         }
 
         this.brushModeUpdate();
+
+        this._onBrushModeChangeEvent.invoke(brushMode);
     }
 
     private brushModeUpdate(): void {
@@ -245,5 +249,9 @@ export class UIView extends TWE.Component {
         if (this._listView === null) return;
 
         this._listView.clear();
+    }
+
+    public get onBrushModeChange(): TWE.IEventContainer<(brushMode: BrushMode) => void> {
+        return this._onBrushModeChangeEvent;
     }
 }
