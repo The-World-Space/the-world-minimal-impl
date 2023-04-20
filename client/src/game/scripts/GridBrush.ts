@@ -16,12 +16,14 @@ export class GridBrush extends TWE.Component {
 
     public start(): void {
         const cursorImageRef = new TWE.PrefabRef<TWE.CssSpriteAtlasRenderer>();
-        const cursorObject = this.engine.scene.addChildFromBuilder(
+        const cursorObject = this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject("cursor")
                 .withComponent(TWE.CssSpriteAtlasRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
                     c.viewScale = 1;
+                    c.pointerEvents = false;
+                    c.opacity = 0.5;
                 })
                 .getComponent(TWE.CssSpriteAtlasRenderer, cursorImageRef)
         );
@@ -68,7 +70,7 @@ export class GridBrush extends TWE.Component {
 
     private readonly onPointerLeave = (): void => {
         if (this._cursorObject) {
-            this._cursorObject.activeSelf = false;
+            this._cursorObject.activeSelf = true;
         }
     };
 

@@ -44,6 +44,7 @@ export class Bootstrapper extends TWE.Bootstrapper {
 
                         c.imageSources = [ new TWE.TileAtlasItem(image, 16, 16) ];
                         c.chunkSize = 15;
+                        c.filter.brightness = 1.04;
 
                         const converter = {
                             /* eslint-disable @typescript-eslint/naming-convention */

@@ -39,6 +39,7 @@ export class UIView extends TWE.Component {
     private readonly _listViewItemMap = new Map<AtlasListItem, GameHtmlListViewItem>();
 
     private readonly _onBrushModeChangeEvent = new TWE.EventContainer<(mode: BrushMode) => void>();
+    private readonly _onBrushTypeChangeEvent = new TWE.EventContainer<(type: BrushType) => void>();
 
     public awake(): void {
         this._uiBuilder = this.gameObject.getComponent(UIBuilder);
@@ -204,6 +205,8 @@ export class UIView extends TWE.Component {
                 brushTypeErase!.checked = newState;
             }
         }
+
+        this._onBrushTypeChangeEvent.invoke(brushType);
     }
 
     public get brushMode(): BrushMode {
@@ -253,5 +256,9 @@ export class UIView extends TWE.Component {
 
     public get onBrushModeChange(): TWE.IEventContainer<(brushMode: BrushMode) => void> {
         return this._onBrushModeChangeEvent;
+    }
+
+    public get onBrushTypeChange(): TWE.IEventContainer<(brushType: BrushType) => void> {
+        return this._onBrushTypeChangeEvent;
     }
 }
