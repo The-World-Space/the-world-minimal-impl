@@ -3,9 +3,9 @@ import * as TWE from "the-world-engine";
 import TrrainSpriteAtlas from "@/res/terrain.png";
 
 import type { GridBrush } from "./GridBrush";
-import type { AtlasListItem} from "./UIView";
-import { BrushType} from "./UIView";
-import { BrushMode} from "./UIView";
+import type { AtlasListItem } from "./UIView";
+import { BrushType } from "./UIView";
+import { BrushMode } from "./UIView";
 import { UIView } from "./UIView";
 
 export class BrushController extends TWE.Component {
@@ -56,7 +56,7 @@ export class BrushController extends TWE.Component {
         if (type === BrushType.Draw) {
             if (mode === BrushMode.Collider) {
                 cursorImage.enabled = true;
-                cursorImage.asyncSetImageFromPath(TWE.GlobalConfig.defaultSpriteSrc, 0, 0);
+                cursorImage.asyncSetImageFromPath(TWE.GlobalConfig.defaultSpriteSrc, 1, 1);
                 cursorImage.imageIndex = 0;
             } else {
                 const currentAtlasListItem = this._currentAtlasListItem;
@@ -76,8 +76,7 @@ export class BrushController extends TWE.Component {
             cursorImage.enabled = true;
             cursorImage.asyncSetImageFromPath(
                 "data:image/bmp;base64,Qk06AAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAl5XcAA==",
-                0, 0,
-                () => console.log("set cursorImage done")
+                1, 1
             );
             cursorImage.imageIndex = 0;
         }

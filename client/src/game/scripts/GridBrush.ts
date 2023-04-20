@@ -24,6 +24,7 @@ export class GridBrush extends TWE.Component {
                     c.viewScale = 1;
                     c.pointerEvents = false;
                     c.opacity = 0.5;
+                    c.filter.brightness = 1.5;
                 })
                 .getComponent(TWE.CssSpriteAtlasRenderer, cursorImageRef)
         );
