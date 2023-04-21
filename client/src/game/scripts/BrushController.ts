@@ -33,65 +33,78 @@ export class BrushController extends TWE.Component {
         this.addItems();
 
         this._gridBrush.onDraw.addListener(this.onDraw);
+
+        this._view!.onPanelToggle.addListener(this.onPanelToggle);
         this._view!.onBrushModeChange.addListener(this.onBrushModeChange);
         this._view!.onBrushTypeChange.addListener(this.onBrushTypeChange);
-        this.updateBrushState(this._view!.brushMode, this._view!.brushType);
+        this.updateBrushState(this._view!.isPanelOpen, this._view!.brushMode, this._view!.brushType);
     }
 
     public onDestroy(): void {
         this._gridBrush?.onDraw.removeListener(this.onDraw);
+
+        this._view?.onPanelToggle.removeListener(this.onPanelToggle);
         this._view?.onBrushModeChange.removeListener(this.onBrushModeChange);
         this._view?.onBrushTypeChange.removeListener(this.onBrushTypeChange);
         this._view = null;
     }
 
-    private readonly updateBrushState = (mode: BrushMode, type: BrushType): void => {
+    private readonly updateBrushState = (isPanelOpen: boolean, mode: BrushMode, type: BrushType): void => {
         if (this._collideMap) {
-            this._collideMap.showCollider = mode === BrushMode.Collider;
+            this._collideMap.showCollider = mode === BrushMode.Collider && isPanelOpen;
         }
 
         const cursorImage = this._gridBrush?.cursorImage;
         if (!cursorImage) return;
 
-        if (type === BrushType.Draw) {
-            if (mode === BrushMode.Collider) {
-                cursorImage.enabled = true;
-                cursorImage.asyncSetImageFromPath(TWE.GlobalConfig.defaultSpriteSrc, 1, 1);
-                cursorImage.imageIndex = 0;
-            } else {
-                const currentAtlasListItem = this._currentAtlasListItem;
-                if (currentAtlasListItem === null) {
-                    cursorImage.enabled = false;
-                } else {
-                    cursorImage.enabled = true;
-                    cursorImage.asyncSetImageFromPath(
-                        currentAtlasListItem.image,
-                        currentAtlasListItem.columnCount,
-                        currentAtlasListItem.rowCount
-                    );
-                    cursorImage.imageIndex = currentAtlasListItem.index;
-                }
-            }
+        if (isPanelOpen === false) {
+            cursorImage.enabled = false;
         } else {
-            cursorImage.enabled = true;
-            cursorImage.asyncSetImageFromPath(
-                "data:image/bmp;base64,Qk06AAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAl5XcAA==",
-                1, 1
-            );
-            cursorImage.imageIndex = 0;
+            if (type === BrushType.Draw) {
+                if (mode === BrushMode.Collider) {
+                    cursorImage.enabled = true;
+                    cursorImage.asyncSetImageFromPath(TWE.GlobalConfig.defaultSpriteSrc, 1, 1);
+                    cursorImage.imageIndex = 0;
+                } else {
+                    const currentAtlasListItem = this._currentAtlasListItem;
+                    if (currentAtlasListItem === null) {
+                        cursorImage.enabled = false;
+                    } else {
+                        cursorImage.enabled = true;
+                        cursorImage.asyncSetImageFromPath(
+                            currentAtlasListItem.image,
+                            currentAtlasListItem.columnCount,
+                            currentAtlasListItem.rowCount
+                        );
+                        cursorImage.imageIndex = currentAtlasListItem.index;
+                    }
+                }
+            } else {
+                cursorImage.enabled = true;
+                cursorImage.asyncSetImageFromPath(
+                    "data:image/bmp;base64,Qk06AAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAl5XcAA==",
+                    1, 1
+                );
+                cursorImage.imageIndex = 0;
+            }
         }
     };
 
+    private readonly onPanelToggle = (isPanelOpen: boolean): void => {
+        this.updateBrushState(isPanelOpen, this._view!.brushMode, this._view!.brushType);
+    };
+
     private readonly onBrushModeChange = (mode: BrushMode): void => {
-        this.updateBrushState(mode, this._view!.brushType);
+        this.updateBrushState(this._view!.isPanelOpen, mode, this._view!.brushType);
     };
 
     private readonly onBrushTypeChange = (type: BrushType): void => {
-        this.updateBrushState(this._view!.brushMode, type);
+        this.updateBrushState(this._view!.isPanelOpen, this._view!.brushMode, type);
     };
 
     private readonly onDraw = (gridX: number, gridY: number): void => {
         if (this._view === null) return;
+        if (this._view.isPanelOpen === false) return;
 
         const brushMode = this._view.brushMode;
         if (brushMode === BrushMode.Collider) {
@@ -127,7 +140,7 @@ export class BrushController extends TWE.Component {
                 onClick: (item: AtlasListItem) => {
                     this._view?.brushTypeChange(BrushType.Draw);
                     this._currentAtlasListItem = item;
-                    this.updateBrushState(this._view!.brushMode, this._view!.brushType);
+                    this.updateBrushState(this._view!.isPanelOpen, this._view!.brushMode, this._view!.brushType);
                 }
             });
         }

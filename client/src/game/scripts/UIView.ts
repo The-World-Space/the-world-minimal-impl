@@ -38,6 +38,7 @@ export class UIView extends TWE.Component {
     private _isListViewMounted = false;
     private readonly _listViewItemMap = new Map<AtlasListItem, GameHtmlListViewItem>();
 
+    private readonly _onPanelToggleEvent = new TWE.EventContainer<(isOpen: boolean) => void>();
     private readonly _onBrushModeChangeEvent = new TWE.EventContainer<(mode: BrushMode) => void>();
     private readonly _onBrushTypeChangeEvent = new TWE.EventContainer<(type: BrushType) => void>();
 
@@ -84,22 +85,15 @@ export class UIView extends TWE.Component {
     }
 
     public readonly panelToggle = (): void => {
-        this._isPanelOpen = !this._isPanelOpen;
-        this.panelUpdate();
+        this.panelToggleFromState(!this._isPanelOpen);
     };
 
-    public panelOpen(): void {
-        if (this._isPanelOpen) return;
+    public panelToggleFromState(isOpen: boolean): void {
+        if (this._isPanelOpen === isOpen) return;
 
-        this._isPanelOpen = true;
+        this._isPanelOpen = isOpen;
         this.panelUpdate();
-    }
-
-    public panelClose(): void {
-        if (!this._isPanelOpen) return;
-
-        this._isPanelOpen = false;
-        this.panelUpdate();
+        this._onPanelToggleEvent.invoke(isOpen);
     }
 
     private panelUpdate(): void {
@@ -209,6 +203,10 @@ export class UIView extends TWE.Component {
         this._onBrushTypeChangeEvent.invoke(brushType);
     }
 
+    public get isPanelOpen(): boolean {
+        return this._isPanelOpen;
+    }
+
     public get brushMode(): BrushMode {
         return this._brushMode;
     }
@@ -252,6 +250,10 @@ export class UIView extends TWE.Component {
         if (this._listView === null) return;
 
         this._listView.clear();
+    }
+
+    public get onPanelToggle(): TWE.IEventContainer<(isOpen: boolean) => void> {
+        return this._onPanelToggleEvent;
     }
 
     public get onBrushModeChange(): TWE.IEventContainer<(brushMode: BrushMode) => void> {
