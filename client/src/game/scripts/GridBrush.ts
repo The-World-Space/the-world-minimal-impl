@@ -71,7 +71,7 @@ export class GridBrush extends TWE.Component {
 
     private readonly onPointerLeave = (): void => {
         if (this._cursorObject) {
-            this._cursorObject.activeSelf = true;
+            this._cursorObject.activeSelf = false;
         }
     };
 
